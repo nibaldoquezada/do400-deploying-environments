@@ -1,46 +1,25 @@
 pipeline {
 
-     agent {
+    agent {
+        node {
+            label 'maven'
+        }
+    }
 
-          node {
-
-               label 'maven'
-
-          }
-
-     }
-
-      stages {
-
-           stage('Tests') {
-
-                steps {
-
-                     sh './mvnw clean test'
-
+    stages {
+        stage('Tests') {
+            steps {
+                sh './mvnw clean test'
                 }
-
-           }
-
-            stage('Package') {
-
-                 steps {
-
-                      sh '''
-
-                       ./mvnw package -DskipTests \
-
-                        -Dquarkus.package.type=uber-jar
-
-                         '''
-
-                          archiveArtifacts 'target/*.jar'
-
-                 }
-
             }
-
+        stage('Package') {
+            steps {
+                sh '''
+                    ./mvnw package -DskipTests -Dquarkus.package.type=uber-jar
+                    '''
+                    archiveArtifacts 'target/*.jar'
+                 }
+            }
       }
-
 }
               
